@@ -30,3 +30,7 @@ dist-ssr
 .env.local
 .env.*.local
 
+# ZIP archives
+*.zip
+
+
