@@ -11,7 +11,7 @@ import Videos from './pages/Videos';
 
 function App() {
   return (
-    <Router>
+    <Router basename="/admin">
       <Toaster 
         position="top-right" 
         toastOptions={{
