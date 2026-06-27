@@ -86,11 +86,6 @@ const Login = () => {
             </div>
           </div>
 
-          {/* Info Box */}
-          <div className="p-3 rounded-xl bg-slate-950/50 border border-slate-850 text-[11px] text-slate-500 leading-normal">
-            <span className="font-semibold text-slate-400">Demo Credentials:</span><br />
-            Username: <code className="text-violet-400">admin</code> | Password: <code className="text-violet-400">admin@123</code>
-          </div>
 
           {/* Submit Button */}
           <button
