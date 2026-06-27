@@ -1,5 +1,5 @@
 import React, { useState } from 'react';
-import { Link, useLocation } from 'react-router-dom';
+import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
   FolderKanban, 
@@ -7,12 +7,19 @@ import {
   Video, 
   Menu, 
   X, 
-  GraduationCap
+  GraduationCap,
+  LogOut
 } from 'lucide-react';
 
 const Layout = ({ children }) => {
   const [isOpen, setIsOpen] = useState(false);
   const location = useLocation();
+  const navigate = useNavigate();
+
+  const handleLogout = () => {
+    localStorage.removeItem('vrplay-auth');
+    navigate('/login', { replace: true });
+  };
 
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
@@ -56,6 +63,16 @@ const Layout = ({ children }) => {
           })}
         </nav>
         
+        <div className="p-4 border-t border-slate-850 shrink-0">
+          <button
+            onClick={handleLogout}
+            className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/5 transition-all duration-200 cursor-pointer"
+          >
+            <LogOut className="h-5 w-5" />
+            Logout
+          </button>
+        </div>
+
         <div className="p-4 border-t border-slate-800 text-center">
           <p className="text-xs text-slate-500">© 2026 VR Play Portal</p>
         </div>
@@ -101,6 +118,20 @@ const Layout = ({ children }) => {
                 );
               })}
             </nav>
+
+            <div className="p-4 border-t border-slate-850 shrink-0">
+              <button
+                onClick={handleLogout}
+                className="w-full flex items-center gap-3 px-4 py-3 rounded-xl text-sm font-medium text-rose-400 hover:text-rose-300 hover:bg-rose-500/5 transition-all duration-200 cursor-pointer"
+              >
+                <LogOut className="h-5 w-5" />
+                Logout
+              </button>
+            </div>
+            
+            <div className="p-4 border-t border-slate-800 text-center">
+              <p className="text-xs text-slate-500">© 2026 VR Play Portal</p>
+            </div>
           </aside>
         </div>
       )}

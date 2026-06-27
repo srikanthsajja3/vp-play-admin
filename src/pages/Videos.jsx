@@ -169,8 +169,16 @@ const Videos = () => {
       toast.error('Video title is required');
       return;
     }
-    if (!formData.category_id || !formData.subject_id) {
-      toast.error('Category and Subject assignments are required');
+    if (!formData.category_id) {
+      toast.error('Category assignment is required');
+      return;
+    }
+
+    const selectedCategory = categories.find(c => Number(c.id) === Number(formData.category_id));
+    const categoryHasSubjects = selectedCategory ? Number(selectedCategory.has_subjects) === 1 : false;
+
+    if (categoryHasSubjects && !formData.subject_id) {
+      toast.error('Subject assignment is required for this category');
       return;
     }
     if (!formData.video_url.trim()) {
@@ -180,7 +188,7 @@ const Videos = () => {
 
     const payload = {
       category_id: Number(formData.category_id),
-      subject_id: Number(formData.subject_id),
+      subject_id: categoryHasSubjects ? Number(formData.subject_id) : 0,
       title: formData.title,
       image_url: formData.image_url,
       video_url: formData.video_url,
@@ -274,6 +282,9 @@ const Videos = () => {
   const filteredFilterSubjects = categoryFilter === 'all' 
     ? subjects 
     : subjects.filter(s => Number(s.category_id) === Number(categoryFilter));
+
+  const selectedCategoryObj = categories.find(c => Number(c.id) === Number(formData.category_id));
+  const categoryHasSubjects = selectedCategoryObj ? Number(selectedCategoryObj.has_subjects) === 1 : false;
 
   return (
     <div className="space-y-6 max-w-7xl mx-auto">
@@ -503,10 +514,16 @@ const Videos = () => {
                     value={formData.subject_id}
                     onChange={handleInputChange}
                     className="w-full bg-slate-950 border border-slate-800 focus:border-violet-500/50 rounded-xl px-4 py-2.5 text-sm text-slate-100 focus:outline-none disabled:opacity-50"
-                    required
-                    disabled={!formData.category_id}
+                    required={categoryHasSubjects}
+                    disabled={!formData.category_id || !categoryHasSubjects}
                   >
-                    <option value="">Select Subject</option>
+                    <option value="">
+                      {!formData.category_id 
+                        ? 'Select Category First' 
+                        : !categoryHasSubjects 
+                          ? 'No subjects required' 
+                          : 'Select Subject'}
+                    </option>
                     {formSubjects.map(s => (
                       <option key={s.id} value={s.id}>{s.name}</option>
                     ))}
