@@ -12,8 +12,10 @@ import Classes from './pages/Classes';
 import FileSystem from './pages/FileSystem';
 
 function App() {
+  const basename = window.location.pathname.startsWith('/admin') ? '/admin' : '/';
+
   return (
-    <Router basename="/admin">
+    <Router basename={basename}>
       <Toaster 
         position="top-right" 
         toastOptions={{
