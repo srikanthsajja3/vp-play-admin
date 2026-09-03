@@ -8,12 +8,17 @@ import {
   Plus, 
   Clock, 
   Activity, 
-  AlertCircle
+  AlertCircle,
+  Layers,
+  HardDrive
 } from 'lucide-react';
 import api from '../utils/api';
+import { getStoredClasses } from './Classes';
 
 const Dashboard = () => {
   const [stats, setStats] = useState({
+    classes: 0,
+    activeClasses: 0,
     categories: 0,
     activeCategories: 0,
     subjects: 0,
@@ -39,7 +44,17 @@ const Dashboard = () => {
         const subjects = subjRes.data?.subjects || [];
         const videos = vidRes.data?.videos || [];
 
+        let classList = getStoredClasses();
+        try {
+          const clsRes = await api.get('/education_class.php');
+          if (clsRes.data?.classes && Array.isArray(clsRes.data.classes)) {
+            classList = clsRes.data.classes;
+          }
+        } catch (e) {}
+
         setStats({
+          classes: classList.length,
+          activeClasses: classList.filter(c => Number(c.is_active) === 1).length,
           categories: categories.length,
           activeCategories: categories.filter(c => Number(c.is_active) === 1).length,
           subjects: subjects.length,
@@ -74,9 +89,17 @@ const Dashboard = () => {
   return (
     <div className="space-y-8 max-w-7xl mx-auto">
       {/* Header Section */}
-      <div>
-        <h2 className="text-3xl font-extrabold text-white tracking-tight">Overview Dashboard</h2>
-        <p className="text-slate-400 mt-1">Manage educational categories, courses, subjects, and digital lectures.</p>
+      <div className="flex flex-col md:flex-row md:items-center md:justify-between gap-4">
+        <div>
+          <h2 className="text-3xl font-extrabold text-white tracking-tight">Overview Dashboard</h2>
+          <p className="text-slate-400 mt-1">Manage educational classes, categories, courses, subjects, and digital lectures.</p>
+        </div>
+        <Link
+          to="/filesystem"
+          className="flex items-center gap-2 bg-gradient-to-r from-violet-600 to-indigo-600 hover:from-violet-500 hover:to-indigo-500 text-white font-semibold px-5 py-3 rounded-xl transition-all shadow-lg text-sm shrink-0"
+        >
+          <HardDrive className="h-4 w-4" /> Open File Explorer
+        </Link>
       </div>
 
       {error && (
@@ -87,7 +110,27 @@ const Dashboard = () => {
       )}
 
       {/* Stats Cards */}
-      <div className="grid grid-cols-1 md:grid-cols-3 gap-6">
+      <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-4 gap-6">
+        {/* Classes Card */}
+        <div className="relative overflow-hidden group bg-slate-950/40 border border-slate-800 rounded-2xl p-6 transition-all duration-300 hover:border-slate-700 hover:shadow-2xl hover:shadow-purple-950/10">
+          <div className="absolute top-0 right-0 w-32 h-32 bg-purple-600/10 rounded-full blur-2xl group-hover:bg-purple-600/15 transition-all"></div>
+          <div className="flex justify-between items-start">
+            <div>
+              <p className="text-slate-400 text-sm font-medium">Classes</p>
+              <h3 className="text-4xl font-black text-white mt-2">{stats.classes}</h3>
+              <p className="text-xs text-purple-400 mt-2 flex items-center gap-1 font-semibold">
+                <Activity className="h-3 w-3" /> {stats.activeClasses} Active
+              </p>
+            </div>
+            <div className="p-3 bg-purple-500/10 text-purple-400 rounded-xl border border-purple-500/20">
+              <Layers className="h-6 w-6" />
+            </div>
+          </div>
+          <Link to="/classes" className="mt-4 flex items-center justify-between text-xs text-slate-400 hover:text-white font-medium group/btn pt-4 border-t border-slate-850">
+            Manage Classes
+            <ArrowRight className="h-3.5 w-3.5 group-hover/btn:translate-x-1 transition-transform" />
+          </Link>
+        </div>
         {/* Categories Card */}
         <div className="relative overflow-hidden group bg-slate-950/40 border border-slate-800 rounded-2xl p-6 transition-all duration-300 hover:border-slate-700 hover:shadow-2xl hover:shadow-violet-950/10">
           <div className="absolute top-0 right-0 w-32 h-32 bg-violet-600/10 rounded-full blur-2xl group-hover:bg-violet-600/15 transition-all"></div>

@@ -573,6 +573,7 @@ const Videos = () => {
                     <option value="youtube">YouTube</option>
                     <option value="vimeo">Vimeo</option>
                     <option value="mp4">Direct MP4 URL</option>
+                    <option value="file_system">File System / Local File</option>
                   </select>
                 </div>
               </div>

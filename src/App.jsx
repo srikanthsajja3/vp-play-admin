@@ -8,6 +8,8 @@ import Dashboard from './pages/Dashboard';
 import Categories from './pages/Categories';
 import Subjects from './pages/Subjects';
 import Videos from './pages/Videos';
+import Classes from './pages/Classes';
+import FileSystem from './pages/FileSystem';
 
 function App() {
   return (
@@ -41,6 +43,8 @@ function App() {
               <Layout>
                 <Routes>
                   <Route path="/" element={<Dashboard />} />
+                  <Route path="/filesystem" element={<FileSystem />} />
+                  <Route path="/classes" element={<Classes />} />
                   <Route path="/categories" element={<Categories />} />
                   <Route path="/subjects" element={<Subjects />} />
                   <Route path="/videos" element={<Videos />} />

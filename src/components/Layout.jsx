@@ -2,9 +2,11 @@ import React, { useState } from 'react';
 import { Link, useLocation, useNavigate } from 'react-router-dom';
 import { 
   LayoutDashboard, 
+  Layers,
   FolderKanban, 
   BookOpen, 
   Video, 
+  HardDrive,
   Menu, 
   X, 
   GraduationCap,
@@ -23,6 +25,8 @@ const Layout = ({ children }) => {
 
   const menuItems = [
     { name: 'Dashboard', path: '/', icon: LayoutDashboard },
+    { name: 'File System', path: '/filesystem', icon: HardDrive },
+    { name: 'Classes', path: '/classes', icon: Layers },
     { name: 'Categories', path: '/categories', icon: FolderKanban },
     { name: 'Subjects', path: '/subjects', icon: BookOpen },
     { name: 'Videos', path: '/videos', icon: Video },
